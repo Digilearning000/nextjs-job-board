@@ -1,24 +1,18 @@
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import Select from "./ui/select";
-import prisma from "../lib/prisma";
 import { jobTypes } from "@/lib/job-types";
-import { Button } from "./ui/button";
+import prisma from "@/lib/prisma";
 import { JobFilterValues, jobFilterSchema } from "@/lib/validation";
 import { redirect } from "next/navigation";
 import FormSubmitButtom from "./FormSubmitButtom";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import Select from "./ui/select";
 
-async function filterJobs(formdata: FormData) {
+async function filterJobs(formData: FormData) {
   "use server";
 
-  const values = Object.fromEntries(formdata.entries());
-  //   console.log(formdata);
+  const values = Object.fromEntries(formData.entries());
 
-  //   console.log(values);
-
-  const formValidation = jobFilterSchema.parse(values);
-  //   console.log(formValidation);
-  const { q, type, location, remote } = formValidation;
+  const { q, type, location, remote } = jobFilterSchema.parse(values);
 
   const searchParams = new URLSearchParams({
     ...(q && { q: q.trim() }),
@@ -26,6 +20,7 @@ async function filterJobs(formdata: FormData) {
     ...(location && { location }),
     ...(remote && { remote: "true" }),
   });
+
   redirect(`/?${searchParams.toString()}`);
 }
 
@@ -33,7 +28,9 @@ interface JobFilterSidebarProps {
   defaultValues: JobFilterValues;
 }
 
-const JobFilterSidebar = async ({ defaultValues }: JobFilterSidebarProps) => {
+export default async function JobFilterSidebar({
+  defaultValues,
+}: JobFilterSidebarProps) {
   const distinctLocations = (await prisma.job
     .findMany({
       where: { approved: true },
@@ -79,7 +76,7 @@ const JobFilterSidebar = async ({ defaultValues }: JobFilterSidebarProps) => {
               name="location"
               defaultValue={defaultValues.location || ""}
             >
-              <option value="">All Locations</option>
+              <option value="">All locations</option>
               {distinctLocations.map((location) => (
                 <option key={location} value={location}>
                   {location}
@@ -102,6 +99,4 @@ const JobFilterSidebar = async ({ defaultValues }: JobFilterSidebarProps) => {
       </form>
     </aside>
   );
-};
-
-export default JobFilterSidebar;
+}
