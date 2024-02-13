@@ -1,5 +1,6 @@
 "use client";
 
+import { createJobPosting } from "@/app/jobs/new/actions";
 import LoadingButton from "@/components/LoadingButton";
 import LocationInput from "@/components/LocationInput";
 import RichTextEditor from "@/components/RichTextEditor";
@@ -16,14 +17,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Select from "@/components/ui/select";
 import { jobTypes, locationTypes } from "@/lib/job-types";
-import { createJobValues, createJobSchema } from "@/lib/validation";
+import { CreateJobValues, createJobSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "lucide-react";
 import { draftToMarkdown } from "markdown-draft-js";
 import { useForm } from "react-hook-form";
 
 export default function NewJobForm() {
-  const form = useForm<createJobValues>({
+  const form = useForm<CreateJobValues>({
     resolver: zodResolver(createJobSchema),
   });
 
@@ -37,8 +38,20 @@ export default function NewJobForm() {
     formState: { isSubmitting },
   } = form;
 
-  async function onSubmit(values: createJobValues) {
-    alert(JSON.stringify(values, null, 2));
+  async function onSubmit(values: CreateJobValues) {
+    const formData = new FormData();
+
+    Object.entries(values).forEach(([key, value]) => {
+      if (value) {
+        formData.append(key, value);
+      }
+    });
+
+    try {
+      await createJobPosting(formData);
+    } catch (error) {
+      alert("something went wrong, please try again");
+    }
   }
 
   return (
