@@ -22,6 +22,8 @@ import { X } from "lucide-react";
 import { draftToMarkdown } from "markdown-draft-js";
 import { useForm } from "react-hook-form";
 import { createJobPosting } from "./actions";
+import { EOF } from "dns";
+import error from "next/error";
 
 export default function NewJobForm() {
   const form = useForm<CreateJobValues>({
@@ -50,7 +52,7 @@ export default function NewJobForm() {
     try {
       await createJobPosting(formData);
     } catch (error) {
-      alert("Something went wrong, please try again.");
+      console.log(error);
     }
   }
 
