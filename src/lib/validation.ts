@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { jobTypes, locationTypes } from "./job-types";
 
-const requiredString = z.string().min(1);
+const requiredString = z.string().min(1, "Required");
 const numericRequiredString = requiredString.regex(/^\d+$/, "Must be a number");
 
 const companyLogoSchema = z
@@ -50,7 +50,7 @@ export const createJobSchema = z
     ),
     companyName: requiredString.max(100),
     companyLogo: companyLogoSchema,
-    description: z.string().min(100).max(5000),
+    description: z.string().max(5000).optional(),
     salary: numericRequiredString.max(
       9,
       "Number can't be longer than 9 digits",

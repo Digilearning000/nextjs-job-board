@@ -1,6 +1,5 @@
 "use client";
 
-import { createJobPosting } from "@/app/jobs/new/actions";
 import LoadingButton from "@/components/LoadingButton";
 import LocationInput from "@/components/LocationInput";
 import RichTextEditor from "@/components/RichTextEditor";
@@ -22,6 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "lucide-react";
 import { draftToMarkdown } from "markdown-draft-js";
 import { useForm } from "react-hook-form";
+import { createJobPosting } from "./actions";
 
 export default function NewJobForm() {
   const form = useForm<CreateJobValues>({
@@ -50,7 +50,7 @@ export default function NewJobForm() {
     try {
       await createJobPosting(formData);
     } catch (error) {
-      alert("something went wrong, please try again");
+      alert("Something went wrong, please try again.");
     }
   }
 

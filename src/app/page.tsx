@@ -10,22 +10,23 @@ interface PageProps {
     type?: string;
     location?: string;
     remote?: string;
+    page?: string;
   };
 }
 
-const getTitle = ({ q, location, type, remote }: JobFilterValues) => {
+function getTitle({ q, type, location, remote }: JobFilterValues) {
   const titlePrefix = q
-    ? `"${q}" Jobs`
+    ? `${q} jobs`
     : type
       ? `${type} developer jobs`
       : remote
-        ? "Remote Developer Jobs"
-        : "All Developer Jobs";
+        ? "Remote developer jobs"
+        : "All developer jobs";
 
-  const titleSuffix = location ? `in ${location}` : "";
+  const titleSuffix = location ? ` in ${location}` : "";
 
-  return `${titlePrefix} ${titleSuffix}`;
-};
+  return `${titlePrefix}${titleSuffix}`;
+}
 
 export function generateMetadata({
   searchParams: { q, type, location, remote },
@@ -41,7 +42,7 @@ export function generateMetadata({
 }
 
 export default async function Home({
-  searchParams: { q, type, location, remote },
+  searchParams: { q, type, location, remote, page },
 }: PageProps) {
   const filterValues: JobFilterValues = {
     q,
@@ -54,11 +55,14 @@ export default async function Home({
     <main className="m-auto my-10 max-w-5xl space-y-10 px-3">
       <div className="space-y-5 text-center">
         <H1>{getTitle(filterValues)}</H1>
-        <p className="text-muted-foreground">Find you dream Job</p>
+        <p className="text-muted-foreground">Find your dream job.</p>
       </div>
       <section className="flex flex-col gap-4 md:flex-row">
         <JobFilterSidebar defaultValues={filterValues} />
-        <JobResults filterValues={filterValues} />
+        <JobResults
+          filterValues={filterValues}
+          page={page ? parseInt(page) : undefined}
+        />
       </section>
     </main>
   );
