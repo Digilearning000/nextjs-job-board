@@ -1,13 +1,12 @@
 "use server";
 
+import prisma from "@/lib/prisma";
 import { toSlug } from "@/lib/utils";
 import { createJobSchema } from "@/lib/validation";
-import { nanoid } from "nanoid";
-
 import { put } from "@vercel/blob";
-import path from "path";
-import prisma from "@/lib/prisma";
+import { nanoid } from "nanoid";
 import { redirect } from "next/navigation";
+import path from "path";
 
 export async function createJobPosting(formData: FormData) {
   const values = Object.fromEntries(formData.entries());
@@ -55,7 +54,6 @@ export async function createJobPosting(formData: FormData) {
       applicationUrl: applicationUrl?.trim(),
       description: description?.trim(),
       salary: parseInt(salary),
-      approved: true,
     },
   });
 

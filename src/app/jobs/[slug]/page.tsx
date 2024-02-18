@@ -1,16 +1,18 @@
-import { cache } from "react";
-import prisma from "@/lib/prisma";
-import { notFound } from "next/navigation";
-import { Metadata } from "next";
 import JobPage from "@/components/JobPage";
 import { Button } from "@/components/ui/button";
+import prisma from "@/lib/prisma";
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { cache } from "react";
 
 interface PageProps {
   params: { slug: string };
 }
 
 const getJob = cache(async (slug: string) => {
-  const job = await prisma.job.findUnique({ where: { slug } });
+  const job = await prisma.job.findUnique({
+    where: { slug },
+  });
 
   if (!job) notFound();
 
@@ -23,7 +25,7 @@ export async function generateStaticParams() {
     select: { slug: true },
   });
 
-  return jobs.map(({ slug }) => ({ slug }));
+  return jobs.map(({ slug }) => slug);
 }
 
 export async function generateMetadata({
@@ -36,8 +38,9 @@ export async function generateMetadata({
   };
 }
 
-const page = async ({ params: { slug } }: PageProps) => {
+export default async function Page({ params: { slug } }: PageProps) {
   const job = await getJob(slug);
+
   const { applicationEmail, applicationUrl } = job;
 
   const applicationLink = applicationEmail
@@ -61,6 +64,4 @@ const page = async ({ params: { slug } }: PageProps) => {
       </aside>
     </main>
   );
-};
-
-export default page;
+}

@@ -1,4 +1,4 @@
-import citiesList from "@/lib/cities-lists";
+import citiesList from "@/lib/cities-list";
 import { forwardRef, useMemo, useState } from "react";
 import { Input } from "./ui/input";
 
@@ -26,7 +26,7 @@ export default forwardRef<HTMLInputElement, LocationInputProps>(
               city.toLowerCase().includes(word.toLowerCase()),
             ),
         )
-        .slice(0, 4);
+        .slice(0, 5);
     }, [locationSearchInput]);
 
     return (

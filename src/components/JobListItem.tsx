@@ -1,15 +1,15 @@
-import { Job } from "@prisma/client";
-import Image from "next/image";
 import companyLogoPlaceholder from "@/assets/company-logo-placeholder.png";
-import { Banknote, Briefcase, Clock, Globe2, MapPin } from "lucide-react";
 import { formatMoney, relativeDate } from "@/lib/utils";
+import { Job } from "@prisma/client";
+import { Banknote, Briefcase, Clock, Globe2, MapPin } from "lucide-react";
+import Image from "next/image";
 import Badge from "./Badge";
 
-interface JobListItem {
+interface JobListItemProps {
   job: Job;
 }
 
-const JobListItem = ({
+export default function JobListItem({
   job: {
     title,
     companyName,
@@ -20,7 +20,7 @@ const JobListItem = ({
     companyLogoUrl,
     createdAt,
   },
-}: JobListItem) => {
+}: JobListItemProps) {
   return (
     <article className="flex gap-3 rounded-lg border p-5 hover:bg-muted/60">
       <Image
@@ -40,15 +40,15 @@ const JobListItem = ({
             <Briefcase size={16} className="shrink-0" />
             {type}
           </p>
-          <p className="flex items-center gap-1.5 ">
+          <p className="flex items-center gap-1.5">
             <MapPin size={16} className="shrink-0" />
             {locationType}
           </p>
-          <p className="flex items-center gap-1.5 ">
+          <p className="flex items-center gap-1.5">
             <Globe2 size={16} className="shrink-0" />
             {location || "Worldwide"}
           </p>
-          <p className="flex items-center gap-1.5 ">
+          <p className="flex items-center gap-1.5">
             <Banknote size={16} className="shrink-0" />
             {formatMoney(salary)}
           </p>
@@ -67,6 +67,4 @@ const JobListItem = ({
       </div>
     </article>
   );
-};
-
-export default JobListItem;
+}
