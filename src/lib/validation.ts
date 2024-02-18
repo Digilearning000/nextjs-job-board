@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { jobTypes, locationTypes } from "./job-types";
 
-const requiredString = z.string().min(1, "Required");
+const requiredString = z.string().min(5, "Required");
 const numericRequiredString = requiredString.regex(/^\d+$/, "Must be a number");
 
 const companyLogoSchema = z
