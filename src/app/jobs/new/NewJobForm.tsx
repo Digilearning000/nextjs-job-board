@@ -128,7 +128,7 @@ export default function NewJobForm() {
               name="companyLogo"
               render={({ field: { value, ...fieldValues } }) => (
                 <FormItem>
-                  <FormLabel>Company logo</FormLabel>
+                  <FormLabel>Company logo (optional)</FormLabel>
                   <FormControl>
                     <Input
                       {...fieldValues}
